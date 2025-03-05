@@ -1,4 +1,5 @@
 using Raylib_cs;
+using ChessBot.Logic;
 
 namespace ChessBot.Visuals;
 
@@ -14,4 +15,5 @@ static class Settings {
     public static readonly Color CellColorLight = new Color(238, 238, 210);
 
     public static Font BoardFont;
+    public static readonly Texture2D[] pieces = new Texture2D[Piece.Black | Piece.King + 1];
 }

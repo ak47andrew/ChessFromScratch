@@ -64,6 +64,15 @@ class Program {
                         textColor
                     );
                 }
+
+                // Draw piece on the cell
+                byte piece = pieces[x + y * 8];
+                if ((0b111 & piece) == 0) {
+                    continue;
+                }
+
+                Texture2D texture = Settings.pieces[piece];
+                Raylib.DrawTexture(texture, posX, posY, Color.White);
             }
         }
     }
@@ -71,19 +80,62 @@ class Program {
     static void PreLoad(){
         Settings.BoardFont = Raylib.LoadFont("resources/NotoSans.ttf");
         Raylib.SetTextureFilter(Settings.BoardFont.Texture, TextureFilter.Bilinear);
+
+        Settings.pieces[Piece.White | Piece.Pawn] = LoadPiece("wp");
+        Settings.pieces[Piece.White | Piece.Knight] = LoadPiece("wn");
+        Settings.pieces[Piece.White | Piece.Bishop] = LoadPiece("wb");
+        Settings.pieces[Piece.White | Piece.Rook] = LoadPiece("wr");
+        Settings.pieces[Piece.White | Piece.Queen] = LoadPiece("wq");
+        Settings.pieces[Piece.White | Piece.King] = LoadPiece("wk");
+
+        Settings.pieces[Piece.Black | Piece.Pawn] = LoadPiece("bp");
+        Settings.pieces[Piece.Black | Piece.Knight] = LoadPiece("bn");
+        Settings.pieces[Piece.Black | Piece.Bishop] = LoadPiece("bb");
+        Settings.pieces[Piece.Black | Piece.Rook] = LoadPiece("br");
+        Settings.pieces[Piece.Black | Piece.Queen] = LoadPiece("bq");
+        Settings.pieces[Piece.Black | Piece.King] = LoadPiece("bk");
     }
 
-    public static void Main(String[] args){
+    static Texture2D LoadPiece(string name)
+    {
+        Image original = default;
+        Image resized = default;
+        
+        try
+        {
+            original = Raylib.LoadImage($"resources/piece/{name}.png");
+            resized = Raylib.ImageCopy(original);
+            Raylib.ImageResize(ref resized, Settings.CellSize, Settings.CellSize);
+            
+            Texture2D texture = Raylib.LoadTextureFromImage(resized);
+            Raylib.SetTextureFilter(texture, TextureFilter.Bilinear);
+            
+            // Important: Flush the GPU pipeline
+            Raylib.BeginDrawing();
+            Raylib.EndDrawing();
+            
+            return texture;
+        }
+        finally
+        {
+            Raylib.UnloadImage(original);
+            Raylib.UnloadImage(resized);
+        }
+    }
+
+    public static void Main(){
         Raylib.InitWindow(1280, 720, "ChessBot");
 
         PreLoad();
+
+        byte[] pieces = new byte[64];
 
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Settings.BackgroundColor);
 
-            DrawBoard(new byte[64]);
+            DrawBoard(pieces);
 
             Raylib.EndDrawing();
         }
