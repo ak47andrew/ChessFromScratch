@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "Launch Visuals",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/ChessBot.Visuals/bin/Debug/net9.0/ChessBot.Visuals.dll",
+            "cwd": "${workspaceFolder}/ChessBot.Visuals",
+            "console": "integratedTerminal"
+        }
+    ]
+}
