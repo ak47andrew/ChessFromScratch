@@ -128,14 +128,14 @@ class Program {
 
         PreLoad();
 
-        byte[] pieces = new byte[64];
+        Board board = new Board();
 
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Settings.BackgroundColor);
 
-            DrawBoard(pieces);
+            DrawBoard(board.board);
 
             Raylib.EndDrawing();
         }
