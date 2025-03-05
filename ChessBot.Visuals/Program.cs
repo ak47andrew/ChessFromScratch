@@ -5,20 +5,16 @@ namespace ChessBot.Visuals;
 
 class Program {
     static void DrawBoard(Piece[] pieces){
-        // Startpos: (560, 280); 20 pixels
+        int StartposX = (Settings.ScreenWidth - 8 * Settings.CellSize) / 2;
+        int StartposY = (Settings.ScreenHeight - 8 * Settings.CellSize) / 2;
+
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                int posX = 300 + x * 85;
-                int posY = 20 + y * 85;
-                Color color;
+                int posX = StartposX + x * Settings.CellSize;
+                int posY = StartposY + y * Settings.CellSize;
 
-                if ((x + y) % 2 == 0) {
-                    color = Color.White;
-                } else {
-                    color = Color.Gray;
-                }
-
-                Raylib.DrawRectangle(posX, posY, 85, 85, color);
+                Raylib.DrawRectangle(posX, posY, Settings.CellSize, Settings.CellSize, 
+                                (x + y) % 2 == 0 ? Settings.CellColorDark : Settings.CellColorLight);
             }
         }
     }
@@ -29,11 +25,9 @@ class Program {
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(new Color(84, 84, 84));
+            Raylib.ClearBackground(Settings.BackgroundColor);
 
             DrawBoard(new Piece[1]);
-
-            // Raylib.DrawText("Hello, world!", 12, 12, 20, Color.Black);
 
             Raylib.EndDrawing();
         }
