@@ -1,9 +1,10 @@
-using Raylib_cs;
 using ChessBot.Logic;
+using Raylib_cs;
 
 namespace ChessBot.Visuals;
 
-static class Settings {
+static class Settings
+{
     public const int ScreenWidth = 1280;
     public const int ScreenHeight = 720;
     public const int CellSize = 85;

@@ -1,6 +1,7 @@
 ﻿namespace ChessBot.Logic;
 
-public class Piece {
+public class Piece
+{
     public static byte None = 0;
     public static byte Pawn = 1;
     public static byte Knight = 2;

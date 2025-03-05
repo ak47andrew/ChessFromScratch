@@ -1,10 +1,11 @@
-﻿using ChessBot.Logic;
+﻿using System.Numerics;
+using ChessBot.Logic;
 using Raylib_cs;
-using System.Numerics;
 
 namespace ChessBot.Visuals;
 
-class Program {
+class Program
+{
     static void DrawBoard(byte[] pieces)
     {
         int StartposX = (Settings.ScreenWidth - 8 * Settings.CellSize) / 2;
@@ -21,7 +22,8 @@ class Program {
                 int posY = StartposY + y * Settings.CellSize;
 
                 // Draw the chessboard cell
-                Color cellColor = (x + y) % 2 == 0 ? Settings.CellColorDark : Settings.CellColorLight;
+                Color cellColor =
+                    (x + y) % 2 == 0 ? Settings.CellColorDark : Settings.CellColorLight;
                 Raylib.DrawRectangle(posX, posY, Settings.CellSize, Settings.CellSize, cellColor);
 
                 // Draw coordinates on the leftmost column (ranks 1-8)
@@ -29,7 +31,8 @@ class Program {
                 {
                     int rank = 8 - y;
                     string rankStr = rank.ToString();
-                    Color textColor = ((x + y) % 2 == 0) ? Settings.CellColorLight : Settings.CellColorDark;
+                    Color textColor =
+                        ((x + y) % 2 == 0) ? Settings.CellColorLight : Settings.CellColorDark;
 
                     Vector2 position = new Vector2(posX + padding, posY + padding);
                     Raylib.DrawTextPro(
@@ -49,9 +52,15 @@ class Program {
                 {
                     char file = (char)('a' + x);
                     string fileStr = file.ToString();
-                    Color textColor = ((x + y) % 2 == 0) ? Settings.CellColorLight : Settings.CellColorDark;
+                    Color textColor =
+                        ((x + y) % 2 == 0) ? Settings.CellColorLight : Settings.CellColorDark;
 
-                    Vector2 textSize = Raylib.MeasureTextEx(Settings.BoardFont, fileStr, fontSize, 0);
+                    Vector2 textSize = Raylib.MeasureTextEx(
+                        Settings.BoardFont,
+                        fileStr,
+                        fontSize,
+                        0
+                    );
                     float textX = posX + Settings.CellSize - textSize.X - padding;
                     float textY = posY + Settings.CellSize - textSize.Y - padding;
 
@@ -67,7 +76,8 @@ class Program {
 
                 // Draw piece on the cell
                 byte piece = pieces[x + y * 8];
-                if ((0b111 & piece) == 0) {
+                if ((0b111 & piece) == 0)
+                {
                     continue;
                 }
 
@@ -77,7 +87,8 @@ class Program {
         }
     }
 
-    static void PreLoad(){
+    static void PreLoad()
+    {
         Settings.BoardFont = Raylib.LoadFont("resources/NotoSans.ttf");
         Raylib.SetTextureFilter(Settings.BoardFont.Texture, TextureFilter.Bilinear);
 
@@ -100,20 +111,20 @@ class Program {
     {
         Image original = default;
         Image resized = default;
-        
+
         try
         {
             original = Raylib.LoadImage($"resources/piece/{name}.png");
             resized = Raylib.ImageCopy(original);
             Raylib.ImageResize(ref resized, Settings.CellSize, Settings.CellSize);
-            
+
             Texture2D texture = Raylib.LoadTextureFromImage(resized);
             Raylib.SetTextureFilter(texture, TextureFilter.Bilinear);
-            
+
             // Important: Flush the GPU pipeline
             Raylib.BeginDrawing();
             Raylib.EndDrawing();
-            
+
             return texture;
         }
         finally
@@ -123,7 +134,8 @@ class Program {
         }
     }
 
-    public static void Main(){
+    public static void Main()
+    {
         Raylib.InitWindow(1280, 720, "ChessBot");
 
         PreLoad();
@@ -141,6 +153,5 @@ class Program {
         }
 
         Raylib.CloseWindow();
-
     }
 }
